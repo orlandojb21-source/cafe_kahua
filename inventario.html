@@ -39,6 +39,26 @@
       <button class="btn btn-primary" id="btn-nuevo-insumo">+ Nuevo insumo</button>
     </div>
 
+    <div class="card" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+      <input type="text" id="f-buscar" placeholder="Buscar insumo..." style="flex:1; min-width:180px; padding:8px;" />
+
+      <select id="f-filtro-categoria" style="padding:8px;">
+        <option value="">Todas las categorías</option>
+      </select>
+
+      <select id="f-filtro-proveedor" style="padding:8px;">
+        <option value="">Todos los proveedores</option>
+      </select>
+
+      <select id="f-filtro-stock" style="padding:8px;">
+        <option value="">Todo el stock</option>
+        <option value="bajo">Solo stock bajo</option>
+        <option value="ok">Solo stock OK</option>
+      </select>
+
+      <button class="btn" id="btn-limpiar-filtros" style="background:#eee;">Limpiar</button>
+    </div>
+
     <div class="card">
       <table>
         <thead>
@@ -76,9 +96,10 @@
         <label>Unidad de medida</label>
         <select id="f-unidad" style="width:100%; padding:8px; margin-bottom:10px;">
           <option value="g">g (gramos)</option>
-          <option value="kg">kg</option>
-          <option value="ml">ml</option>
-          <option value="l">l</option>
+          <option value="kg">kg (kilogramos)</option>
+          <option value="lb">lb (libras)</option>
+          <option value="ml">ml (mililitros)</option>
+          <option value="l">l (litros)</option>
           <option value="unidad">unidad</option>
         </select>
 
