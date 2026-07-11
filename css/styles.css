@@ -131,18 +131,18 @@ th {
 
 nav.tabs {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
+  gap: 4px 8px;
   border-bottom: 1px solid var(--kahua-borde);
   margin-bottom: 20px;
-  overflow-x: auto;
 }
 
 nav.tabs a {
-  padding: 12px 18px;
+  padding: 10px 16px;
   text-decoration: none;
   color: var(--kahua-texto-secundario);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   border-bottom: 2px solid transparent;
   white-space: nowrap;
