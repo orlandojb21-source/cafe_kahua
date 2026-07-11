@@ -2,6 +2,7 @@
 // Lógica del módulo Registro de Tarjeta: listar y crear registros
 
 let registros = [];
+let subtabActual = "todos";
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-nuevo-registro").addEventListener("click", () => abrirModal());
@@ -13,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function cargarRegistros() {
   const tbody = document.getElementById("tabla-registros-body");
-  tbody.innerHTML = `<tr><td colspan="6">Cargando...</td></tr>`;
+  tbody.innerHTML = `<tr><td colspan="7">Cargando...</td></tr>`;
 
   try {
     const res = await apiPost("listarRegistroTarjeta");
@@ -22,23 +23,49 @@ async function cargarRegistros() {
     renderTabla();
     actualizarTotalMes();
   } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="6">Error al cargar los registros.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7">Error al cargar los registros.</td></tr>`;
   }
 }
 
+function cambiarSubtab(tipo) {
+  subtabActual = tipo;
+
+  ["todos", "tarjeta", "efectivo"].forEach(t => {
+    const btn = document.getElementById(`subtab-${t}`);
+    if (t === tipo) {
+      btn.style.background = "var(--kahua-verde)";
+      btn.style.color = "var(--kahua-crema)";
+    } else {
+      btn.style.background = "#eee";
+      btn.style.color = "var(--kahua-texto)";
+    }
+  });
+
+  renderTabla();
+  actualizarTotalMes();
+}
 function renderTabla() {
   const tbody = document.getElementById("tabla-registros-body");
 
-  if (registros.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6">No hay registros todavía.</td></tr>`;
+  const filtrados = subtabActual === "todos"
+    ? registros
+    : registros.filter(r => (r.tipo_pago || "efectivo") === subtabActual);
+
+  if (filtrados.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7">No hay registros para este filtro.</td></tr>`;
     return;
   }
 
-  tbody.innerHTML = registros.map(r => `
+  tbody.innerHTML = filtrados.map(r => `
     <tr>
       <td>${formatearFecha(r.fecha)}</td>
       <td>${escaparHtml(r.comercio)}</td>
       <td>${formatearMoneda(r.monto)}</td>
+      <td>
+        ${r.tipo_pago === "tarjeta"
+          ? `<span class="badge" style="background:rgba(91,107,69,0.12); color:var(--kahua-verde);">Tarjeta</span>`
+          : `<span class="badge" style="background:rgba(224,166,57,0.15); color:var(--kahua-terracota);">Efectivo</span>`}
+      </td>
       <td>${escaparHtml(r.descripcion)}</td>
       <td>${escaparHtml(r.observacion)}</td>
       <td style="text-align:right;">
@@ -53,7 +80,11 @@ function actualizarTotalMes() {
   const mesActual = ahora.getMonth();
   const anioActual = ahora.getFullYear();
 
-  const totalMes = registros
+  const base = subtabActual === "todos"
+    ? registros
+    : registros.filter(r => (r.tipo_pago || "efectivo") === subtabActual);
+
+  const totalMes = base
     .filter(r => {
       const f = new Date(r.fecha);
       return f.getMonth() === mesActual && f.getFullYear() === anioActual;
@@ -73,6 +104,7 @@ function abrirModal(idRegistro) {
     document.getElementById("f-id-registro").value = r.id_registro;
     document.getElementById("f-fecha").value = formatearFechaInput(r.fecha);
     document.getElementById("f-comercio").value = r.comercio;
+    document.getElementById("f-tipo-pago").value = r.tipo_pago || "efectivo";
     document.getElementById("f-monto").value = r.monto;
     document.getElementById("f-descripcion").value = r.descripcion;
     document.getElementById("f-observacion").value = r.observacion;
@@ -80,6 +112,7 @@ function abrirModal(idRegistro) {
     document.getElementById("modal-titulo-registro").textContent = "Nuevo registro de tarjeta";
     document.getElementById("f-id-registro").value = "";
     document.getElementById("f-fecha").valueAsDate = new Date();
+    document.getElementById("f-tipo-pago").value = subtabActual === "tarjeta" ? "tarjeta" : "efectivo";
   }
 
   document.getElementById("modal-registro").style.display = "flex";
@@ -106,6 +139,7 @@ async function guardarRegistro(ev) {
   const payload = {
     fecha: document.getElementById("f-fecha").value,
     comercio: document.getElementById("f-comercio").value.trim(),
+    tipo_pago: document.getElementById("f-tipo-pago").value,
     monto: document.getElementById("f-monto").value,
     descripcion: document.getElementById("f-descripcion").value.trim(),
     observacion: document.getElementById("f-observacion").value.trim()
