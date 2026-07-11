@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pedidos a Proveedores | Kahua</title>
+  <title>Productos | Kahua</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
@@ -22,65 +22,27 @@
     <nav class="tabs">
       <a href="dashboard.html">Dashboard</a>
       <a href="inventario.html">Inventario</a>
-      <a href="productos.html">Productos</a>
+      <a href="productos.html" class="activo">Productos</a>
       <a href="recetas.html">Recetas</a>
       <a href="proveedores.html">Proveedores</a>
-      <a href="pedidos-proveedor.html" class="activo">Pedidos</a>
-      <a href="registro-tarjeta.html">Tarjeta</a>
+      <a href="pedidos-proveedor.html">Pedidos</a>
+      <a href="registro-tarjeta.html">Caja Menuda</a>
       <a href="reportes.html">Reportes</a>
       <a href="movimientos.html">Movimientos</a>
       <a href="usuarios.html">Usuarios</a>
     </nav>
 
-    <!-- Vista: lista de pedidos -->
-    <div id="vista-lista">
-      <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-        <div><strong id="total-pedidos">0</strong> pedidos</div>
-        <button class="btn btn-primary" id="btn-nuevo-pedido">+ Nuevo pedido</button>
-      </div>
-
-      <div class="card">
-        <table>
-          <thead>
-            <tr>
-              <th>Fecha solicitud</th>
-              <th>Proveedor</th>
-              <th># Insumos</th>
-              <th>Estado</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="tabla-pedidos-body">
-            <tr><td colspan="5">Cargando...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Vista: crear/editar pedido -->
-    <div id="vista-pedido" style="display:none;">
-      <div class="card">
-        <button type="button" class="btn" id="btn-volver" style="background:#eee; margin-bottom:12px;">← Volver a la lista</button>
-
-        <div style="margin-bottom:16px;">
-          <label>Proveedor</label><br/>
-          <select id="f-proveedor-pedido" style="width:100%; max-width:320px; padding:8px;"></select>
-        </div>
-
-        <div id="lista-insumos-proveedor">
-          <p style="color:var(--kahua-texto-secundario);">Selecciona un proveedor para ver su lista de insumos.</p>
-        </div>
-
-        <div style="margin-top:16px; text-align:right;">
-          <button type="button" class="btn btn-primary" id="btn-guardar-pedido">Guardar pedido</button>
-        </div>
-      </div>
+    <div class="card" style="text-align:center; padding:60px 20px;">
+      <p style="font-size:40px; margin:0 0 10px;">🚧</p>
+      <h2 style="margin:0 0 8px; color:var(--kahua-verde);">Módulo en construcción</h2>
+      <p style="color:var(--kahua-texto-secundario); margin:0;">
+        Productos estará disponible próximamente.
+      </p>
     </div>
   </div>
 
   <script src="js/config.js"></script>
   <script src="js/api.js"></script>
   <script src="js/utils.js"></script>
-  <script src="js/pedidos-proveedor.js"></script>
 </body>
 </html>
