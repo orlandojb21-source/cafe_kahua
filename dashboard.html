@@ -12,12 +12,23 @@
       justify-content: center;
       align-items: center;
       padding: 20px;
+      position: relative;
     }
-    .plano-wrap img {
+    .plano-wrap img.plano {
       max-width: 100%;
       height: auto;
       border-radius: var(--kahua-radius);
       box-shadow: var(--kahua-sombra);
+    }
+    .marca-agua {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 160px;
+      height: 160px;
+      opacity: 0.12;
+      pointer-events: none;
     }
   </style>
 </head>
@@ -40,7 +51,8 @@
     </nav>
 
     <div class="card plano-wrap">
-      <img src="img/plano-cafeteria.png" alt="Plano de la cafetería Kahua" />
+      <img class="plano" src="img/plano-cafeteria.png" alt="Plano de la cafetería Kahua" />
+      <img class="marca-agua" src="img/logo.png" alt="" />
     </div>
   </div>
 
