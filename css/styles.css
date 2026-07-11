@@ -1,11 +1,12 @@
 /* styles.css - Kahua Panama Coffee Bar */
 
 :root {
-  --kahua-verde: #1B3B33;
-  --kahua-verde-claro: #2C5148;
+  --kahua-verde: #5B6B45;
+  --kahua-verde-claro: #74845A;
   --kahua-crema: #F3ECD9;
   --kahua-crema-oscuro: #E5DBC2;
-  --kahua-terracota: #B45A2E;
+  --kahua-terracota: #8B5A3C;
+  --kahua-amarillo: #E0A639;
   --kahua-rojo: #C23B2E;
   --kahua-texto: #2C2C2A;
   --kahua-texto-secundario: #6B6A63;
