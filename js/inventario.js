@@ -5,14 +5,28 @@ let categorias = [];
 let proveedores = [];
 let insumos = [];
 
-document.addEventListener("DOMContentLoaded", async () => {
-  await Promise.all([cargarCategorias(), cargarProveedores()]);
-  await cargarInventario();
-
+document.addEventListener("DOMContentLoaded", () => {
+  // Los listeners se registran primero, sin depender de que la carga de datos funcione
   document.getElementById("btn-nuevo-insumo").addEventListener("click", () => abrirModal());
   document.getElementById("btn-cancelar").addEventListener("click", cerrarModal);
   document.getElementById("form-insumo").addEventListener("submit", guardarInsumo);
+
+  inicializarDatos();
 });
+
+async function inicializarDatos() {
+  try {
+    await Promise.all([cargarCategorias(), cargarProveedores()]);
+  } catch (err) {
+    console.error("Error cargando categorías/proveedores:", err);
+  }
+
+  try {
+    await cargarInventario();
+  } catch (err) {
+    console.error("Error cargando inventario:", err);
+  }
+}
 
 async function cargarCategorias() {
   const res = await apiPost("listarCategorias");
