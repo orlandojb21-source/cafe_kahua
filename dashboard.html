@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Kahua</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    .plano-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .plano-wrap img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--kahua-radius);
+      box-shadow: var(--kahua-sombra);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="app-header">
+    <img src="img/logo.png" alt="Kahua" />
+    <h1>Kahua</h1>
+  </header>
+
+  <div class="container">
+    <nav class="tabs">
+      <a href="dashboard.html" class="activo">Dashboard</a>
+      <a href="inventario.html">Inventario</a>
+      <a href="productos.html">Productos</a>
+      <a href="recetas.html">Recetas</a>
+      <a href="proveedores.html">Proveedores</a>
+      <a href="movimientos.html">Movimientos</a>
+      <a href="usuarios.html">Usuarios</a>
+    </nav>
+
+    <div class="card plano-wrap">
+      <img src="img/plano-cafeteria.png" alt="Plano de la cafetería Kahua" />
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+</body>
+</html>
