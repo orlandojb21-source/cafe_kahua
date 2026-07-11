@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registro de Tarjeta | Kahua</title>
+  <title>Caja Menuda | Kahua</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
@@ -26,11 +26,17 @@
       <a href="recetas.html">Recetas</a>
       <a href="proveedores.html">Proveedores</a>
       <a href="pedidos-proveedor.html">Pedidos</a>
-      <a href="registro-tarjeta.html" class="activo">Tarjeta</a>
+      <a href="registro-tarjeta.html" class="activo">Caja Menuda</a>
       <a href="reportes.html">Reportes</a>
       <a href="movimientos.html">Movimientos</a>
       <a href="usuarios.html">Usuarios</a>
     </nav>
+
+    <div class="card" style="display:flex; gap:8px; padding:10px;">
+      <button type="button" class="btn sub-tab activo" id="subtab-todos" onclick="cambiarSubtab('todos')" style="background:var(--kahua-verde); color:var(--kahua-crema); border:none;">Todos</button>
+      <button type="button" class="btn sub-tab" id="subtab-tarjeta" onclick="cambiarSubtab('tarjeta')" style="background:#eee; border:none;">Tarjeta</button>
+      <button type="button" class="btn sub-tab" id="subtab-efectivo" onclick="cambiarSubtab('efectivo')" style="background:#eee; border:none;">Efectivo</button>
+    </div>
 
     <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
       <div><strong id="total-gastado">$0.00</strong> gastado este mes</div>
@@ -44,13 +50,14 @@
             <th>Fecha</th>
             <th>Comercio</th>
             <th>Monto</th>
+            <th>Tipo</th>
             <th>Descripción</th>
             <th>Observación</th>
             <th></th>
           </tr>
         </thead>
         <tbody id="tabla-registros-body">
-          <tr><td colspan="6">Cargando...</td></tr>
+          <tr><td colspan="7">Cargando...</td></tr>
         </tbody>
       </table>
     </div>
@@ -67,6 +74,12 @@
 
         <label>Comercio</label>
         <input type="text" id="f-comercio" required style="width:100%; padding:8px; margin-bottom:10px;" />
+
+        <label>Tipo de pago</label>
+        <select id="f-tipo-pago" required style="width:100%; padding:8px; margin-bottom:10px;">
+          <option value="efectivo">Efectivo</option>
+          <option value="tarjeta">Tarjeta</option>
+        </select>
 
         <label>Monto (USD)</label>
         <input type="number" id="f-monto" step="0.01" required style="width:100%; padding:8px; margin-bottom:10px;" />
