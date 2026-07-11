@@ -27,6 +27,7 @@
       <a href="proveedores.html">Proveedores</a>
       <a href="pedidos-proveedor.html">Pedidos</a>
       <a href="registro-tarjeta.html" class="activo">Tarjeta</a>
+      <a href="reportes.html">Reportes</a>
       <a href="movimientos.html">Movimientos</a>
       <a href="usuarios.html">Usuarios</a>
     </nav>
@@ -45,10 +46,11 @@
             <th>Monto</th>
             <th>Descripción</th>
             <th>Observación</th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="tabla-registros-body">
-          <tr><td colspan="5">Cargando...</td></tr>
+          <tr><td colspan="6">Cargando...</td></tr>
         </tbody>
       </table>
     </div>
@@ -57,8 +59,9 @@
   <!-- Modal nuevo registro -->
   <div id="modal-registro" style="display:none; position:fixed; inset:0; background:rgba(27,59,51,0.4); align-items:center; justify-content:center;">
     <div class="card" style="width:100%; max-width:420px;">
-      <h3 style="margin-top:0;">Nuevo registro de tarjeta</h3>
+      <h3 id="modal-titulo-registro" style="margin-top:0;">Nuevo registro de tarjeta</h3>
       <form id="form-registro">
+        <input type="hidden" id="f-id-registro" />
         <label>Fecha</label>
         <input type="date" id="f-fecha" required style="width:100%; padding:8px; margin-bottom:10px;" />
 
