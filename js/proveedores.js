@@ -38,14 +38,32 @@ function renderTabla() {
       <td>${escaparHtml(p.nombre)}</td>
       <td>${escaparHtml(p.categoria_principal)}</td>
       <td>${escaparHtml(p.contacto_nombre)}</td>
-      <td>${escaparHtml(p.telefono_whatsapp)}</td>
-      <td>${escaparHtml(p.email)}</td>
+      <td>
+        ${p.telefono_whatsapp
+          ? `<a href="${linkWhatsapp(p.telefono_whatsapp)}" target="_blank" rel="noopener" style="color:var(--kahua-verde); text-decoration:none;" title="Abrir WhatsApp">
+               💬 ${escaparHtml(p.telefono_whatsapp)}
+             </a>`
+          : "-"}
+      </td>
+      <td>
+        ${p.email
+          ? `<a href="mailto:${escaparHtml(p.email)}" style="color:var(--kahua-verde); text-decoration:none;" title="Enviar correo">
+               ✉️ ${escaparHtml(p.email)}
+             </a>`
+          : "-"}
+      </td>
       <td>${escaparHtml(p.dias_entrega)}</td>
       <td>
         <button class="btn" style="background:#eee; padding:6px 10px;" onclick="abrirModal('${p.id_proveedor}')">Editar</button>
       </td>
     </tr>
   `).join("");
+}
+
+function linkWhatsapp(telefono) {
+  // Quita todo lo que no sea número (espacios, guiones, +, paréntesis)
+  const soloNumeros = telefono.replace(/\D/g, "");
+  return `https://wa.me/${soloNumeros}`;
 }
 
 function abrirModal(idProveedor) {
