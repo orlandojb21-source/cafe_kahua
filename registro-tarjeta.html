@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de Tarjeta | Kahua</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
+  <link rel="icon" href="img/favicon.ico" />
+</head>
+<body>
+
+  <header class="app-header">
+    <img src="img/logo.png" alt="Kahua" />
+    <h1>Kahua</h1>
+  </header>
+
+  <div class="container">
+    <nav class="tabs">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="inventario.html">Inventario</a>
+      <a href="productos.html">Productos</a>
+      <a href="recetas.html">Recetas</a>
+      <a href="proveedores.html">Proveedores</a>
+      <a href="pedidos-proveedor.html">Pedidos</a>
+      <a href="registro-tarjeta.html" class="activo">Tarjeta</a>
+      <a href="movimientos.html">Movimientos</a>
+      <a href="usuarios.html">Usuarios</a>
+    </nav>
+
+    <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+      <div><strong id="total-gastado">$0.00</strong> gastado este mes</div>
+      <button class="btn btn-primary" id="btn-nuevo-registro">+ Nuevo registro</button>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Comercio</th>
+            <th>Monto</th>
+            <th>Descripción</th>
+            <th>Observación</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-registros-body">
+          <tr><td colspan="5">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal nuevo registro -->
+  <div id="modal-registro" style="display:none; position:fixed; inset:0; background:rgba(27,59,51,0.4); align-items:center; justify-content:center;">
+    <div class="card" style="width:100%; max-width:420px;">
+      <h3 style="margin-top:0;">Nuevo registro de tarjeta</h3>
+      <form id="form-registro">
+        <label>Fecha</label>
+        <input type="date" id="f-fecha" required style="width:100%; padding:8px; margin-bottom:10px;" />
+
+        <label>Comercio</label>
+        <input type="text" id="f-comercio" required style="width:100%; padding:8px; margin-bottom:10px;" />
+
+        <label>Monto (USD)</label>
+        <input type="number" id="f-monto" step="0.01" required style="width:100%; padding:8px; margin-bottom:10px;" />
+
+        <label>Descripción</label>
+        <input type="text" id="f-descripcion" style="width:100%; padding:8px; margin-bottom:10px;" />
+
+        <label>Observación</label>
+        <textarea id="f-observacion" rows="2" style="width:100%; padding:8px; margin-bottom:16px;"></textarea>
+
+        <div style="display:flex; gap:8px; justify-content:flex-end;">
+          <button type="button" class="btn" id="btn-cancelar" style="background:#eee;">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-guardar-registro">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/registro-tarjeta.js"></script>
+</body>
+</html>
