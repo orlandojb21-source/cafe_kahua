@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reportes | Kahua</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
+  <link rel="icon" href="img/favicon.ico" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+
+  <header class="app-header">
+    <img src="img/logo.png" alt="Kahua" />
+    <h1>Kahua</h1>
+  </header>
+
+  <div class="container">
+    <nav class="tabs">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="inventario.html">Inventario</a>
+      <a href="productos.html">Productos</a>
+      <a href="recetas.html">Recetas</a>
+      <a href="proveedores.html">Proveedores</a>
+      <a href="pedidos-proveedor.html">Pedidos</a>
+      <a href="registro-tarjeta.html">Tarjeta</a>
+      <a href="reportes.html" class="activo">Reportes</a>
+      <a href="movimientos.html">Movimientos</a>
+      <a href="usuarios.html">Usuarios</a>
+    </nav>
+
+    <div class="card">
+      <h3 style="margin-top:0;">Reporte de Inventario</h3>
+      <p style="color:var(--kahua-texto-secundario); font-size:14px;">Listado completo de insumos con stock, costo y estado.</p>
+      <button class="btn btn-primary" onclick="generarReporteInventario()">Generar PDF</button>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0;">Reporte de Proveedores</h3>
+      <p style="color:var(--kahua-texto-secundario); font-size:14px;">Listado de proveedores activos con contacto y días de entrega.</p>
+      <button class="btn btn-primary" onclick="generarReporteProveedores()">Generar PDF</button>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0;">Reporte de Gastos con Tarjeta</h3>
+      <p style="color:var(--kahua-texto-secundario); font-size:14px;">Detalle de uso de tarjeta, con opción de filtrar por rango de fechas.</p>
+      <div style="display:flex; gap:10px; align-items:end; flex-wrap:wrap; margin-bottom:12px;">
+        <div>
+          <label style="font-size:13px;">Desde</label><br/>
+          <input type="date" id="rep-fecha-desde" style="padding:8px;" />
+        </div>
+        <div>
+          <label style="font-size:13px;">Hasta</label><br/>
+          <input type="date" id="rep-fecha-hasta" style="padding:8px;" />
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="generarReporteTarjeta()">Generar PDF</button>
+    </div>
+
+    <div class="card" style="opacity:0.6;">
+      <h3 style="margin-top:0;">Reporte de Ingresos / Ventas</h3>
+      <p style="color:var(--kahua-texto-secundario); font-size:14px;">Disponible cuando el módulo de Ventas/Comandas esté construido.</p>
+      <button class="btn" style="background:#eee;" disabled>Próximamente</button>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/reportes.js"></script>
+</body>
+</html>
