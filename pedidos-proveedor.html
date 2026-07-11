@@ -10,6 +10,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
   <link rel="icon" href="img/favicon.ico" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
 
@@ -71,8 +73,38 @@
           <p style="color:var(--kahua-texto-secundario);">Selecciona un proveedor para ver su lista de insumos.</p>
         </div>
 
+        <div style="margin-top:16px; display:flex; justify-content:space-between;">
+          <button type="button" class="btn" id="btn-generar-pdf" style="background:#eee;">📄 Generar PDF para enviar</button>
+          <div style="display:flex; gap:8px;">
+            <button type="button" class="btn" id="btn-marcar-recibido" style="background:var(--kahua-amarillo); display:none;">Marcar insumos recibidos</button>
+            <button type="button" class="btn btn-primary" id="btn-guardar-pedido">Guardar pedido</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vista: marcar recibido -->
+    <div id="vista-recibido" style="display:none;">
+      <div class="card">
+        <button type="button" class="btn" id="btn-volver-recibido" style="background:#eee; margin-bottom:12px;">← Volver a la lista</button>
+        <h3 style="margin-top:0;">Confirmar recepción de pedido</h3>
+        <p style="color:var(--kahua-texto-secundario); font-size:14px;">Ingresa la cantidad recibida y el precio según factura para cada insumo. El total debe coincidir con el total de la factura para poder confirmar.</p>
+
+        <div id="lista-recibido"></div>
+
+        <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+          <div>
+            <label>Total según factura (USD)</label><br/>
+            <input type="number" id="f-total-factura" step="0.01" style="padding:8px; width:160px;" />
+          </div>
+          <div style="text-align:right;">
+            <p style="margin:0; font-size:14px;">Total calculado: <strong id="total-calculado">$0.00</strong></p>
+            <p id="mensaje-validacion" style="margin:4px 0 0; font-size:13px; color:var(--kahua-rojo);"></p>
+          </div>
+        </div>
+
         <div style="margin-top:16px; text-align:right;">
-          <button type="button" class="btn btn-primary" id="btn-guardar-pedido">Guardar pedido</button>
+          <button type="button" class="btn btn-primary" id="btn-confirmar-recibido" disabled>Confirmar recepción</button>
         </div>
       </div>
     </div>
