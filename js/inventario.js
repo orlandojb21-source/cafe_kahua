@@ -11,8 +11,22 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-cancelar").addEventListener("click", cerrarModal);
   document.getElementById("form-insumo").addEventListener("submit", guardarInsumo);
 
+  document.getElementById("f-buscar").addEventListener("input", renderTabla);
+  document.getElementById("f-filtro-categoria").addEventListener("change", renderTabla);
+  document.getElementById("f-filtro-proveedor").addEventListener("change", renderTabla);
+  document.getElementById("f-filtro-stock").addEventListener("change", renderTabla);
+  document.getElementById("btn-limpiar-filtros").addEventListener("click", limpiarFiltros);
+
   inicializarDatos();
 });
+
+function limpiarFiltros() {
+  document.getElementById("f-buscar").value = "";
+  document.getElementById("f-filtro-categoria").value = "";
+  document.getElementById("f-filtro-proveedor").value = "";
+  document.getElementById("f-filtro-stock").value = "";
+  renderTabla();
+}
 
 async function inicializarDatos() {
   try {
@@ -31,8 +45,15 @@ async function inicializarDatos() {
 async function cargarCategorias() {
   const res = await apiPost("listarCategorias");
   categorias = res.data || [];
+
   const select = document.getElementById("f-categoria");
   select.innerHTML = categorias
+    .filter(c => c.activo)
+    .map(c => `<option value="${c.id_categoria}">${escaparHtml(c.nombre)}</option>`)
+    .join("");
+
+  const filtroSelect = document.getElementById("f-filtro-categoria");
+  filtroSelect.innerHTML = `<option value="">Todas las categorías</option>` + categorias
     .filter(c => c.activo)
     .map(c => `<option value="${c.id_categoria}">${escaparHtml(c.nombre)}</option>`)
     .join("");
@@ -41,8 +62,15 @@ async function cargarCategorias() {
 async function cargarProveedores() {
   const res = await apiPost("listarProveedores");
   proveedores = res.data || [];
+
   const select = document.getElementById("f-proveedor");
   select.innerHTML = `<option value="">-- Sin proveedor --</option>` + proveedores
+    .filter(p => p.activo)
+    .map(p => `<option value="${p.id_proveedor}">${escaparHtml(p.nombre)}</option>`)
+    .join("");
+
+  const filtroSelect = document.getElementById("f-filtro-proveedor");
+  filtroSelect.innerHTML = `<option value="">Todos los proveedores</option>` + proveedores
     .filter(p => p.activo)
     .map(p => `<option value="${p.id_proveedor}">${escaparHtml(p.nombre)}</option>`)
     .join("");
@@ -69,15 +97,34 @@ function nombreProveedor(id) {
   return prov ? prov.nombre : "-";
 }
 
+function aplicarFiltros() {
+  const texto = document.getElementById("f-buscar").value.trim().toLowerCase();
+  const categoriaFiltro = document.getElementById("f-filtro-categoria").value;
+  const proveedorFiltro = document.getElementById("f-filtro-proveedor").value;
+  const stockFiltro = document.getElementById("f-filtro-stock").value;
+
+  return insumos.filter(i => {
+    if (texto && !i.nombre_insumo.toLowerCase().includes(texto)) return false;
+    if (categoriaFiltro && String(i.id_categoria) !== String(categoriaFiltro)) return false;
+    if (proveedorFiltro && String(i.id_proveedor) !== String(proveedorFiltro)) return false;
+
+    if (stockFiltro === "bajo" && !esStockBajo(i.stock_actual, i.stock_minimo)) return false;
+    if (stockFiltro === "ok" && esStockBajo(i.stock_actual, i.stock_minimo)) return false;
+
+    return true;
+  });
+}
+
 function renderTabla() {
   const tbody = document.getElementById("tabla-inventario-body");
+  const filtrados = aplicarFiltros();
 
-  if (insumos.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8">No hay insumos registrados todavía.</td></tr>`;
+  if (filtrados.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8">No hay insumos que coincidan con la búsqueda/filtros.</td></tr>`;
     return;
   }
 
-  tbody.innerHTML = insumos.map(i => {
+  tbody.innerHTML = filtrados.map(i => {
     const stockBajo = esStockBajo(i.stock_actual, i.stock_minimo);
     return `
       <tr>
