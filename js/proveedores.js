@@ -33,7 +33,9 @@ function renderTabla() {
     return;
   }
 
-  tbody.innerHTML = proveedoresLista.map(p => `
+  tbody.innerHTML = proveedoresLista.map(p => {
+    try {
+      return `
     <tr>
       <td>${escaparHtml(p.nombre)}</td>
       <td>${escaparHtml(p.categoria_principal)}</td>
@@ -41,14 +43,14 @@ function renderTabla() {
       <td>
         ${p.telefono_whatsapp
           ? `<a href="${linkWhatsapp(p.telefono_whatsapp)}" target="_blank" rel="noopener" style="color:var(--kahua-verde); text-decoration:none;" title="Abrir WhatsApp">
-               💬 ${escaparHtml(p.telefono_whatsapp)}
+               💬 ${escaparHtml(String(p.telefono_whatsapp))}
              </a>`
           : "-"}
       </td>
       <td>
         ${p.email
-          ? `<a href="mailto:${escaparHtml(p.email)}" style="color:var(--kahua-verde); text-decoration:none;" title="Enviar correo">
-               ✉️ ${escaparHtml(p.email)}
+          ? `<a href="mailto:${escaparHtml(String(p.email))}" style="color:var(--kahua-verde); text-decoration:none;" title="Enviar correo">
+               ✉️ ${escaparHtml(String(p.email))}
              </a>`
           : "-"}
       </td>
@@ -57,12 +59,18 @@ function renderTabla() {
         <button class="btn" style="background:#eee; padding:6px 10px;" onclick="abrirModal('${p.id_proveedor}')">Editar</button>
       </td>
     </tr>
-  `).join("");
+  `;
+    } catch (err) {
+      console.error("Error renderizando proveedor:", p, err);
+      return `<tr><td colspan="7">Error mostrando "${escaparHtml(p.nombre || "un proveedor")}"</td></tr>`;
+    }
+  }).join("");
 }
 
 function linkWhatsapp(telefono) {
   // Quita todo lo que no sea número (espacios, guiones, +, paréntesis)
-  const soloNumeros = telefono.replace(/\D/g, "");
+  // Se fuerza a String() por si el valor viene como número desde el Sheet
+  const soloNumeros = String(telefono).replace(/\D/g, "");
   return `https://wa.me/${soloNumeros}`;
 }
 
