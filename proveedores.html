@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proveedores | Kahua</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+
+  <header class="app-header">
+    <img src="img/logo.png" alt="Kahua" />
+    <h1>Kahua</h1>
+  </header>
+
+  <div class="container">
+    <nav class="tabs">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="inventario.html">Inventario</a>
+      <a href="productos.html">Productos</a>
+      <a href="recetas.html">Recetas</a>
+      <a href="proveedores.html" class="activo">Proveedores</a>
+      <a href="movimientos.html">Movimientos</a>
+      <a href="usuarios.html">Usuarios</a>
+    </nav>
+
+    <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+      <div><strong id="total-proveedores">0</strong> proveedores activos</div>
+      <button class="btn btn-primary" id="btn-nuevo-proveedor">+ Nuevo proveedor</button>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Contacto</th>
+            <th>WhatsApp</th>
+            <th>Email</th>
+            <th>Días entrega</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tabla-proveedores-body">
+          <tr><td colspan="7">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal crear/editar proveedor -->
+  <div id="modal-proveedor" style="display:none; position:fixed; inset:0; background:rgba(27,59,51,0.4); align-items:center; justify-content:center;">
+    <div class="card" style="width:100%; max-width:420px; max-height:90vh; overflow-y:auto;">
+      <h3 id="modal-titulo" style="margin-top:0;">Nuevo proveedor</h3>
+      <form id="form-proveedor">
+        <input type="hidden" id="f-id-proveedor" />
+
+        <label>Nombre</label>
+        <input type="text" id="f-nombre" required style="width:100%; padding:8px; margin-bottom:10px;" />
+
+        <label>Categoría principal</label>
+        <input type="text" id="f-categoria-principal" placeholder="Ej. Café, Lácteos, Empaques" style="width:100%; padding:8px; margin-bottom:10px;" />
+
+        <label>Nombre de contacto</label>
+        <input type="text" id="f-contacto" style="width:100%; padding:8px; margin-bottom:10px;" />
+
+        <label>WhatsApp / Teléfono</label>
+        <input type="text" id="f-whatsapp" style="width:100%; padding:8px; margin-bottom:10px;" />
+
+        <label>Email</label>
+        <input type="email" id="f-email" style="width:100%; padding:8px; margin-bottom:10px;" />
+
+        <label>Dirección</label>
+        <input type="text" id="f-direccion" style="width:100%; padding:8px; margin-bottom:10px;" />
+
+        <label>Días de entrega</label>
+        <input type="text" id="f-dias-entrega" placeholder="Ej. Lunes y Jueves" style="width:100%; padding:8px; margin-bottom:10px;" />
+
+        <label>Notas</label>
+        <textarea id="f-notas" style="width:100%; padding:8px; margin-bottom:16px;" rows="2"></textarea>
+
+        <div style="display:flex; gap:8px; justify-content:flex-end;">
+          <button type="button" class="btn" id="btn-cancelar" style="background:#eee;">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-guardar-proveedor">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/proveedores.js"></script>
+</body>
+</html>
