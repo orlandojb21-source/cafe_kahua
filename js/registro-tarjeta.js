@@ -3,6 +3,8 @@
 
 let registros = [];
 let subtabActual = "todos";
+let modoPeriodo = "semana";
+let offsetPeriodo = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-nuevo-registro").addEventListener("click", () => abrirModal());
@@ -44,15 +46,66 @@ function cambiarSubtab(tipo) {
   renderTabla();
   actualizarTotalMes();
 }
+function cambiarModoPeriodo() {
+  modoPeriodo = document.getElementById("f-modo-periodo").value;
+  offsetPeriodo = 0;
+  renderTabla();
+  actualizarTotalMes();
+}
+
+function navegarPeriodo(direccion) {
+  offsetPeriodo += direccion;
+  renderTabla();
+  actualizarTotalMes();
+}
+
+function obtenerRangoPeriodo() {
+  const hoy = new Date();
+
+  if (modoPeriodo === "semana") {
+    // Semana de lunes a domingo
+    const diaSemana = hoy.getDay(); // 0 = domingo
+    const diffLunes = diaSemana === 0 ? -6 : 1 - diaSemana;
+
+    const lunes = new Date(hoy);
+    lunes.setDate(hoy.getDate() + diffLunes + offsetPeriodo * 7);
+    lunes.setHours(0, 0, 0, 0);
+
+    const domingo = new Date(lunes);
+    domingo.setDate(lunes.getDate() + 6);
+    domingo.setHours(23, 59, 59, 999);
+
+    const label = `${lunes.toLocaleDateString("es-PA", { day: "2-digit", month: "2-digit" })} - ${domingo.toLocaleDateString("es-PA", { day: "2-digit", month: "2-digit" })}`;
+
+    return { desde: lunes, hasta: domingo, label, etiquetaTotal: offsetPeriodo === 0 ? "gastado esta semana" : `gastado (${label})` };
+  } else {
+    const mes = new Date(hoy.getFullYear(), hoy.getMonth() + offsetPeriodo, 1);
+    const primerDia = new Date(mes.getFullYear(), mes.getMonth(), 1, 0, 0, 0, 0);
+    const ultimoDia = new Date(mes.getFullYear(), mes.getMonth() + 1, 0, 23, 59, 59, 999);
+
+    const label = mes.toLocaleDateString("es-PA", { month: "long", year: "numeric" });
+
+    return { desde: primerDia, hasta: ultimoDia, label, etiquetaTotal: offsetPeriodo === 0 ? "gastado este mes" : `gastado en ${label}` };
+  }
+}
+
 function renderTabla() {
   const tbody = document.getElementById("tabla-registros-body");
+  const { desde, hasta, label } = obtenerRangoPeriodo();
 
-  const filtrados = subtabActual === "todos"
-    ? registros
-    : registros.filter(r => (r.tipo_pago || "efectivo") === subtabActual);
+  document.getElementById("label-periodo").textContent = label;
+
+  let filtrados = registros.filter(r => {
+    const f = new Date(r.fecha);
+    return f >= desde && f <= hasta;
+  });
+
+  if (subtabActual !== "todos") {
+    filtrados = filtrados.filter(r => (r.tipo_pago || "efectivo") === subtabActual);
+  }
 
   if (filtrados.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7">No hay registros para este filtro.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7">No hay registros en este periodo/filtro.</td></tr>`;
     return;
   }
 
@@ -76,22 +129,21 @@ function renderTabla() {
 }
 
 function actualizarTotalMes() {
-  const ahora = new Date();
-  const mesActual = ahora.getMonth();
-  const anioActual = ahora.getFullYear();
+  const { desde, hasta, etiquetaTotal } = obtenerRangoPeriodo();
 
-  const base = subtabActual === "todos"
-    ? registros
-    : registros.filter(r => (r.tipo_pago || "efectivo") === subtabActual);
+  let base = registros.filter(r => {
+    const f = new Date(r.fecha);
+    return f >= desde && f <= hasta;
+  });
 
-  const totalMes = base
-    .filter(r => {
-      const f = new Date(r.fecha);
-      return f.getMonth() === mesActual && f.getFullYear() === anioActual;
-    })
-    .reduce((sum, r) => sum + (Number(r.monto) || 0), 0);
+  if (subtabActual !== "todos") {
+    base = base.filter(r => (r.tipo_pago || "efectivo") === subtabActual);
+  }
 
-  document.getElementById("total-gastado").textContent = formatearMoneda(totalMes);
+  const total = base.reduce((sum, r) => sum + (Number(r.monto) || 0), 0);
+
+  document.getElementById("total-gastado").textContent = formatearMoneda(total);
+  document.getElementById("label-total-periodo").textContent = etiquetaTotal;
 }
 
 function abrirModal(idRegistro) {
