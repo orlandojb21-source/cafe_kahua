@@ -32,14 +32,26 @@
       <a href="usuarios.html">Usuarios</a>
     </nav>
 
-    <div class="card" style="display:flex; gap:8px; padding:10px;">
-      <button type="button" class="btn sub-tab activo" id="subtab-todos" onclick="cambiarSubtab('todos')" style="background:var(--kahua-verde); color:var(--kahua-crema); border:none;">Todos</button>
-      <button type="button" class="btn sub-tab" id="subtab-tarjeta" onclick="cambiarSubtab('tarjeta')" style="background:#eee; border:none;">Tarjeta</button>
-      <button type="button" class="btn sub-tab" id="subtab-efectivo" onclick="cambiarSubtab('efectivo')" style="background:#eee; border:none;">Efectivo</button>
+    <div class="card" style="display:flex; gap:10px; padding:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="btn sub-tab activo" id="subtab-todos" onclick="cambiarSubtab('todos')" style="background:var(--kahua-verde); color:var(--kahua-crema); border:none;">Todos</button>
+        <button type="button" class="btn sub-tab" id="subtab-tarjeta" onclick="cambiarSubtab('tarjeta')" style="background:#eee; border:none;">Tarjeta</button>
+        <button type="button" class="btn sub-tab" id="subtab-efectivo" onclick="cambiarSubtab('efectivo')" style="background:#eee; border:none;">Efectivo</button>
+      </div>
+
+      <div style="display:flex; gap:8px; align-items:center;">
+        <select id="f-modo-periodo" onchange="cambiarModoPeriodo()" style="padding:8px;">
+          <option value="semana">Semana</option>
+          <option value="mes">Mes</option>
+        </select>
+        <button type="button" class="btn" onclick="navegarPeriodo(-1)" style="background:#eee; padding:8px 12px;">◀</button>
+        <span id="label-periodo" style="font-size:14px; font-weight:600; min-width:150px; text-align:center;"></span>
+        <button type="button" class="btn" onclick="navegarPeriodo(1)" style="background:#eee; padding:8px 12px;">▶</button>
+      </div>
     </div>
 
     <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-      <div><strong id="total-gastado">$0.00</strong> Gastado Este Mes</div>
+      <div><strong id="total-gastado">$0.00</strong> <span id="label-total-periodo">gastado esta semana</span></div>
       <button class="btn btn-primary" id="btn-nuevo-registro">+ Nuevo registro</button>
     </div>
 
