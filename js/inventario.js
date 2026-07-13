@@ -30,22 +30,26 @@ function limpiarFiltros() {
 
 async function inicializarDatos() {
   try {
-    await Promise.all([cargarCategorias(), cargarProveedores()]);
-  } catch (err) {
-    console.error("Error cargando categorías/proveedores:", err);
-  }
+    const res = await apiPost("bootstrapInventario");
+    const datos = res.data || {};
 
-  try {
-    await cargarInventario();
+    categorias = datos.categorias || [];
+    renderSelectsCategorias();
+
+    proveedores = datos.proveedores || [];
+    renderSelectsProveedores();
+
+    insumos = (datos.inventario || []).filter(i => i.activo);
+    renderTabla();
+    actualizarResumen();
   } catch (err) {
-    console.error("Error cargando inventario:", err);
+    console.error("Error cargando datos de inventario:", err);
+    document.getElementById("tabla-inventario-body").innerHTML =
+      `<tr><td colspan="8">Error al cargar el inventario.</td></tr>`;
   }
 }
 
-async function cargarCategorias() {
-  const res = await apiPost("listarCategorias");
-  categorias = res.data || [];
-
+function renderSelectsCategorias() {
   const select = document.getElementById("f-categoria");
   select.innerHTML = categorias
     .filter(c => c.activo)
@@ -59,10 +63,7 @@ async function cargarCategorias() {
     .join("");
 }
 
-async function cargarProveedores() {
-  const res = await apiPost("listarProveedores");
-  proveedores = res.data || [];
-
+function renderSelectsProveedores() {
   const select = document.getElementById("f-proveedor");
   select.innerHTML = `<option value="">-- Sin proveedor --</option>` + proveedores
     .filter(p => p.activo)
@@ -76,6 +77,8 @@ async function cargarProveedores() {
     .join("");
 }
 
+// Recarga solo el inventario (usado tras crear/editar un insumo, no hace falta
+// volver a traer categorías/proveedores que no cambiaron).
 async function cargarInventario() {
   const tbody = document.getElementById("tabla-inventario-body");
   tbody.innerHTML = `<tr><td colspan="8">Cargando...</td></tr>`;
