@@ -23,20 +23,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function inicializar() {
   try {
-    const res = await apiPost("listarProveedores");
-    proveedoresPedido = (res.data || []).filter(p => p.activo);
-  } catch (err) {
-    console.error("Error cargando proveedores:", err);
-  }
+    const res = await apiPost("bootstrapPedidosProveedor");
+    const datos = res.data || {};
 
-  try {
-    const res = await apiPost("listarInventario");
-    insumosPedido = (res.data || []).filter(i => i.activo);
-  } catch (err) {
-    console.error("Error cargando inventario:", err);
-  }
+    proveedoresPedido = (datos.proveedores || []).filter(p => p.activo);
+    insumosPedido = (datos.inventario || []).filter(i => i.activo);
 
-  await cargarPedidos();
+    pedidosLista = datos.pedidos || [];
+    renderTablaPedidos();
+    document.getElementById("total-pedidos").textContent = pedidosLista.length;
+  } catch (err) {
+    console.error("Error cargando datos de pedidos:", err);
+    document.getElementById("tabla-pedidos-body").innerHTML =
+      `<tr><td colspan="5">Error al cargar los pedidos.</td></tr>`;
+  }
 }
 
 // ---------- Vista lista ----------
