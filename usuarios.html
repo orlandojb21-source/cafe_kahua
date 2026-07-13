@@ -33,11 +33,26 @@
       <a href="usuarios.html" class="activo">Usuarios</a>
     </nav>
 
-    <div class="card" style="text-align:center; padding:60px 20px;">
-      <p style="font-size:40px; margin:0 0 10px;">🚧</p>
-      <h2 style="margin:0 0 8px; color:var(--kahua-verde);">Módulo en construcción</h2>
-      <p style="color:var(--kahua-texto-secundario); margin:0;">
-        Usuarios estará disponible próximamente.
+    <div class="card">
+      <strong id="total-usuarios">0</strong> Usuarios registrados
+    </div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-usuarios-body">
+          <tr><td colspan="4">Cargando...</td></tr>
+        </tbody>
+      </table>
+      <p style="color:var(--kahua-texto-secundario); font-size:13px; margin:12px 0 0;">
+        Esta vista es solo de lectura. Aún no hay login ni permisos aplicados en la app — los roles mostrados aquí son de referencia hasta que se construya la autenticación.
       </p>
     </div>
   </div>
@@ -45,5 +60,6 @@
   <script src="js/config.js"></script>
   <script src="js/api.js"></script>
   <script src="js/utils.js"></script>
+  <script src="js/usuarios.js"></script>
 </body>
 </html>
