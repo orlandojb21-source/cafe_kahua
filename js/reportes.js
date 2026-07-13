@@ -93,6 +93,7 @@ async function generarReporteTarjeta() {
 
   const desde = document.getElementById("rep-fecha-desde").value;
   const hasta = document.getElementById("rep-fecha-hasta").value;
+  const tipoPago = document.getElementById("rep-tipo-pago").value; // "", "efectivo", "tarjeta"
 
   if (desde) {
     registros = registros.filter(r => new Date(r.fecha) >= new Date(desde));
@@ -100,14 +101,19 @@ async function generarReporteTarjeta() {
   if (hasta) {
     registros = registros.filter(r => new Date(r.fecha) <= new Date(hasta));
   }
+  if (tipoPago) {
+    registros = registros.filter(r => (r.tipo_pago || "efectivo") === tipoPago);
+  }
 
   registros.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
 
-  const doc = iniciarPdf("Reporte de Gastos con Tarjeta");
+  const tituloTipo = tipoPago === "efectivo" ? " (Efectivo)" : tipoPago === "tarjeta" ? " (Tarjeta)" : " (Efectivo + Tarjeta)";
+  const doc = iniciarPdf("Reporte de Caja Menuda" + tituloTipo);
 
   const filas = registros.map(r => [
     formatearFecha(r.fecha),
     r.comercio,
+    r.tipo_pago === "tarjeta" ? "Tarjeta" : "Efectivo",
     formatearMoneda(r.monto),
     r.descripcion,
     r.observacion
@@ -117,15 +123,16 @@ async function generarReporteTarjeta() {
 
   doc.autoTable({
     startY: 38,
-    head: [["Fecha", "Comercio", "Monto", "Descripción", "Observación"]],
+    head: [["Fecha", "Comercio", "Tipo", "Monto", "Descripción", "Observación"]],
     body: filas,
-    foot: [["", "Total", formatearMoneda(total), "", ""]],
+    foot: [["", "", "Total", formatearMoneda(total), "", ""]],
     styles: { fontSize: 9 },
     headStyles: { fillColor: [27, 59, 51] },
     footStyles: { fillColor: [243, 236, 217], textColor: [27, 59, 51], fontStyle: "bold" }
   });
 
-  descargarPdf(doc, `Kahua_GastosTarjeta_${fechaArchivo()}.pdf`);
+  const sufijoTipo = tipoPago ? `_${tipoPago}` : "";
+  descargarPdf(doc, `Kahua_CajaMenuda${sufijoTipo}_${fechaArchivo()}.pdf`);
 }
 
 function fechaArchivo() {
