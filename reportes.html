@@ -30,6 +30,7 @@
       <a href="pedidos-proveedor.html">Pedidos</a>
       <a href="registro-tarjeta.html">Caja Menuda</a>
       <a href="reportes.html" class="activo">Reportes</a>
+      <a href="planner.html">Planner</a>
       <a href="movimientos.html">Movimientos</a>
       <a href="usuarios.html">Usuarios</a>
     </nav>
@@ -47,8 +48,8 @@
     </div>
 
     <div class="card">
-      <h3 style="margin-top:0;">Reporte de Gastos con Tarjeta</h3>
-      <p style="color:var(--kahua-texto-secundario); font-size:14px;">Detalle de uso de tarjeta, con opción de filtrar por rango de fechas.</p>
+      <h3 style="margin-top:0;">Reporte de Caja Menuda</h3>
+      <p style="color:var(--kahua-texto-secundario); font-size:14px;">Detalle de gastos, con opción de filtrar por rango de fechas y por tipo de pago.</p>
       <div style="display:flex; gap:10px; align-items:end; flex-wrap:wrap; margin-bottom:12px;">
         <div>
           <label style="font-size:13px;">Desde</label><br/>
@@ -57,6 +58,14 @@
         <div>
           <label style="font-size:13px;">Hasta</label><br/>
           <input type="date" id="rep-fecha-hasta" style="padding:8px;" />
+        </div>
+        <div>
+          <label style="font-size:13px;">Tipo</label><br/>
+          <select id="rep-tipo-pago" style="padding:8px;">
+            <option value="">Efectivo + Tarjeta</option>
+            <option value="efectivo">Solo Efectivo</option>
+            <option value="tarjeta">Solo Tarjeta</option>
+          </select>
         </div>
       </div>
       <button class="btn btn-primary" onclick="generarReporteTarjeta()">Generar PDF</button>
