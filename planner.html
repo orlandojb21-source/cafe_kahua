@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planner | Kahua</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
+  <link rel="icon" href="img/favicon.ico" />
+</head>
+<body>
+
+  <header class="app-header">
+    <img src="img/logo.png" alt="Kahua" />
+    <h1>Kahua</h1>
+  </header>
+
+  <div class="container">
+    <nav class="tabs">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="inventario.html">Inventario</a>
+      <a href="productos.html">Productos</a>
+      <a href="recetas.html">Recetas</a>
+      <a href="proveedores.html">Proveedores</a>
+      <a href="pedidos-proveedor.html">Pedidos</a>
+      <a href="registro-tarjeta.html">Caja Menuda</a>
+      <a href="reportes.html">Reportes</a>
+      <a href="planner.html" class="activo">Planner</a>
+      <a href="movimientos.html">Movimientos</a>
+      <a href="usuarios.html">Usuarios</a>
+    </nav>
+
+    <!-- Vista: lista de tareas -->
+    <div id="vista-lista">
+      <div class="card" style="display:flex; gap:10px; padding:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button type="button" class="btn sub-tab activo" id="subtab-todas" onclick="cambiarSubtab('todas')" style="background:var(--kahua-verde); color:var(--kahua-crema); border:none;">Todas</button>
+          <button type="button" class="btn sub-tab" id="subtab-pendiente" onclick="cambiarSubtab('pendiente')" style="background:#eee; border:none;">Pendientes</button>
+          <button type="button" class="btn sub-tab" id="subtab-en_progreso" onclick="cambiarSubtab('en_progreso')" style="background:#eee; border:none;">En progreso</button>
+          <button type="button" class="btn sub-tab" id="subtab-en_revision" onclick="cambiarSubtab('en_revision')" style="background:#eee; border:none;">En revisión</button>
+          <button type="button" class="btn sub-tab" id="subtab-completada" onclick="cambiarSubtab('completada')" style="background:#eee; border:none;">Completadas</button>
+        </div>
+        <button class="btn btn-primary" id="btn-nueva-tarea">+ Nueva tarea</button>
+      </div>
+
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>Tarea</th>
+              <th>Creado por</th>
+              <th>Fecha creación</th>
+              <th>Progreso</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tabla-tareas-body">
+            <tr><td colspan="6">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Vista: nueva tarea -->
+    <div id="vista-nueva-tarea" style="display:none;">
+      <div class="card">
+        <button type="button" class="btn" id="btn-volver-nueva" style="background:#eee; margin-bottom:12px;">← Volver a la lista</button>
+        <h3 style="margin-top:0;">Nueva tarea</h3>
+
+        <label>Título de la tarea</label>
+        <input type="text" id="f-titulo-tarea" required style="width:100%; padding:8px; margin-bottom:10px; max-width:500px;" />
+
+        <label>Descripción / contexto (opcional)</label>
+        <textarea id="f-descripcion-tarea" rows="2" style="width:100%; padding:8px; margin-bottom:16px; max-width:500px;"></textarea>
+
+        <label style="display:block; margin-bottom:8px;">Puntos / pasos de la tarea</label>
+        <div id="lista-puntos-nueva"></div>
+        <button type="button" class="btn" id="btn-agregar-punto" style="background:#eee; margin-top:8px;">+ Agregar punto</button>
+
+        <div style="margin-top:20px; display:flex; justify-content:flex-end;">
+          <button type="button" class="btn btn-primary" id="btn-guardar-tarea">Guardar tarea</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vista: detalle de tarea -->
+    <div id="vista-detalle" style="display:none;">
+      <div class="card">
+        <button type="button" class="btn" id="btn-volver-detalle" style="background:#eee; margin-bottom:12px;">← Volver a la lista</button>
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h3 id="detalle-titulo" style="margin:0 0 4px;"></h3>
+            <p id="detalle-descripcion" style="margin:0; color:var(--kahua-texto-secundario); font-size:14px;"></p>
+          </div>
+          <span id="detalle-estado-badge"></span>
+        </div>
+        <p style="font-size:13px; color:var(--kahua-texto-secundario); margin-top:8px;">
+          Creado por <strong id="detalle-creado-por"></strong> · <span id="detalle-fecha-creacion"></span>
+        </p>
+      </div>
+
+      <div class="card">
+        <h4 style="margin-top:0;">Puntos de la tarea</h4>
+        <div id="lista-puntos-detalle"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/planner.js"></script>
+</body>
+</html>
